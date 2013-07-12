@@ -1,0 +1,138 @@
+/*页面背景*/
+body {
+	height: 100%;
+	width: 100%;
+	background: url(../images/index_bj.gif) repeat-x;
+}
+
+/*按钮样式*/
+.btn {
+	background: url(../images/button_bj.gif) no-repeat;
+	font-weight: bold;
+	font-size: 11px;
+	color: #3A688A;
+	width: 76px;
+	height: 24px;
+	line-height: 24px;
+	border: 0px solid #000;
+	margin-left: 10px;
+}
+
+/*用户验证*/
+.usercheck {
+	width: 601px;
+	height: 401px;
+}
+
+.usercheck .one {
+	width: 601px;
+	height: 161px;
+}
+
+.usercheck .up {
+	width: 601px;
+	height: 160px;
+}
+
+.usercheck  .up_left {
+	width: 241px;
+	height: 160px;
+	line-height: 160px;
+	font-weight: bold;
+	font-size: 22px;
+	float: left;
+}
+
+.usercheck .titleA {
+	height: 160px;
+	width: 240px;
+	float: left;
+	color: #D1DDE7;
+}
+
+.usercheck  .linesU {
+	background: #5884A7;
+	height: 100% !important;
+	width: 1px;
+	float: left;
+}
+
+.usercheck  .linesD {
+	background: #5884A7;
+	height: 70% !important;
+	width: 1px;
+	float: left;
+}
+
+.usercheck  .up_right {
+	width: 360px;
+	height: 160px;
+	float: right;
+}
+
+.up_rightA {
+	height: 130px;
+}
+
+.up_rightB1 {
+	color: #DFE8EE;
+	font-size: 15px;
+	font-weight: bold;
+}
+.authCodeText {
+	width:110px;
+	float:left;
+}
+.authCodeImage {
+	line-height:30px;
+	width: 80px;;
+	float: left;
+}
+
+.up_rightB2 {
+	color: #98B3C9;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.usercheck .down {
+	width: 601px;
+	height: 240px;
+}
+
+.usercheck .down_left {
+	width: 241px;
+	height: 240px;
+	line-height: 240px;
+	float: left;
+}
+
+.usercheck .down_ico {
+	width: 240px;
+	height: 240px;
+	float: left;
+	line-height: 240px;
+}
+
+.usercheck .down_right {
+	width: 360px;
+	height: 240px;
+	float: right;
+}
+
+.usercheck .down_table {
+	width: 301px;
+	height: 149px;
+	border: 0px;
+}
+
+.usercheck  .down_table span {
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 15px;
+}
+/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+	/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+	/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+	/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/
+	/**/ /**/ /**/ /**/ /**/ /**/

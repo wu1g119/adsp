@@ -1,0 +1,12 @@
+/*global box*/
+.boxy-wrapper { position:absolute; border:5px solid #336699; }
+.boxy-wrapper.fixed { position:fixed; }
+.boxy-modal-blackout { position:absolute; background-color:black; left:0; top:0; }
+.boxy-wrapper .title-bar { background-color:#31529C; padding:6px; position:relative; }
+.boxy-wrapper .title-bar.dragging { cursor:move; }
+.boxy-wrapper .title-bar h2 { font-size:12px; color:white; line-height:1; margin:0; padding:0; font-weight:normal; }
+.boxy-wrapper .title-bar .close { color:white; position:absolute; top:5px; right:6px; font-size:12px; }
+.boxy-wrapper .title-bar .close:hover { text-decoration:underline; }
+.boxy-inner { background-color:white; padding:0 }
+.boxy-content { padding:30px 80px; }
+.break-word { word-wrap: break-word; break-word: break-all; }

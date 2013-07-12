@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspServiceConfigInfoDao">
+	<!-- 服务配置分页显示 -->
+	<select id="findAdspServiceConfigInfoIsPage" parameterType="adspServiceConfigInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+	    id,
+		version,
+		type,
+		db_name,
+		db_table_name,
+		name,
+		note,
+		del_flag,
+		status,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+	    from adsp_service_config_info 
+	    where 
+			<choose>
+			    <when test="del_flag != null and del_flag != ''">
+			        del_flag=#{del_flag}
+			    </when>
+			    <otherwise>
+			         del_flag='0'
+			    </otherwise>
+			</choose>
+			<if test="status != null and status != '' ">
+				and status=${status}
+			</if>
+			<if test="id != null and id != ''">
+				and id=#{id}
+			</if>
+			<if test="type != null and type != '' ">
+				and type=#{type}
+			</if>
+		order by last_updated DESC
+	</select>
+	<!-- 服务配置 列表显示 -->
+	<select id="findAdspServiceConfigInfoList" parameterType="adspServiceConfigInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+	    id,
+		version,
+		type,
+		del_flag,
+		status,
+		<!-- 精简数据标记 -->
+		<if test="xx_flag = null or xx_flag = ''">
+			config,
+			date_created,
+			create_id,
+			create_ip,
+			last_updated,
+			update_id,
+			db_name,
+			db_table_name,
+		</if>
+		name,
+		note,
+		update_ip
+	    from adsp_service_config_info 
+	    where 
+			<choose>
+			    <when test="del_flag != null and del_flag != ''">
+			        del_flag=#{del_flag}
+			    </when>
+			    <otherwise>
+			         del_flag='0'
+			    </otherwise>
+			</choose>
+			<if test="status != null and status != '' ">
+				and status=${status}
+			</if>
+			<if test="id != null and id != ''">
+				and id=#{id}
+			</if>
+			<if test="type != null and type != '' ">
+				and type=#{type}
+			</if>
+		order by last_updated DESC
+	</select>
+	<!-- 配置信息详情 -->
+	<select id="findAdspServiceConfigInfoById" parameterType="adspServiceConfigInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+	    id,
+		version,
+		type,
+		db_name,
+		db_table_name,
+		name,
+		config,
+		note,
+		del_flag,
+		status,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+	    from adsp_service_config_info 
+	    where  id=#{id}
+	</select>
+	<!-- 判断服务是否存在 -->
+	<select id="isAdspServiceConfigInfoYN" parameterType="adspServiceConfigInfo" resultType="int">
+	    select count(1) from adsp_service_config_info where id=#{id}
+	</select>
+	<!-- 新增服务信息 -->
+	<insert id="insertAdspServiceConfigInfo" parameterType="adspServiceConfigInfo">
+	    insert into  adsp_service_config_info(
+	    id,
+		version,
+		type,
+		db_name,
+		db_table_name,
+		name,
+		config,
+		note,
+		del_flag,
+		status,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip)
+		value(
+		#{id},
+		${version},
+		#{type},
+		#{db_name},
+		#{db_table_name},
+		#{name},
+		#{config},
+		#{note},
+		'0',
+		#{status},
+		now(),
+		#{create_id},
+		#{create_ip},
+		now(),
+		#{update_id},
+		#{update_ip}
+		)
+	</insert>
+	<!-- 服务信息更新 -->
+	<update id="updateAdspServiceConfigInfo" parameterType="adspServiceConfigInfo">
+	    update adsp_service_config_info set 
+		version=version+1,
+		<if test=" type!= null and  type!= '' ">
+		    type=#{type},
+		</if>
+		<if test=" db_name!= null and  db_name!= '' ">
+		    db_name=#{db_name},
+		</if>
+		<if test=" db_table_name!= null and  db_table_name!= '' ">
+		    db_table_name=#{db_table_name},
+		</if>
+		<if test=" name!= null and  name!= '' ">
+		    name=#{name},
+		</if>
+		<if test=" config!= null and  config!= '' ">
+		    config=#{config},
+		</if>
+		<if test=" note!= null and  note!= '' ">
+		    note=#{note},
+		</if>
+		<if test=" del_flag!= null and  del_flag!= '' ">
+		    del_flag=#{del_flag},
+		</if>
+		<if test=" status!= null and  status!= '' ">
+		    status=#{status},
+		</if>
+		<if test=" update_id!= null and  update_id!= '' ">
+		    update_id=#{update_id},
+		</if>
+		<if test=" update_ip!= null and  update_ip!= '' ">
+		    update_ip=#{update_ip},
+		</if>
+		last_updated=now()
+	    where id=#{id}
+	</update>
+	<!-- 获取服务名 -->
+	<select id="findServiceNameById" parameterType="adspServiceConfigInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+	    id,
+		type,
+		name
+	    from adsp_service_config_info 
+	    where  id=#{id}
+	</select>
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspClientInfoDao">
+	<!--  保存子系统信息 -->
+	<insert id="insertAdspClientInfo" parameterType="adspClientInfo">
+	    insert into adsp_client_info(
+		id,
+		version,
+		client_ip,
+		client_code,
+		client_name,
+		note,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+	    ) values (
+		#{id},
+		1,
+		#{client_ip},
+		#{client_code},
+		#{client_name},
+		#{note},
+		'0',
+		now(),
+		#{create_id},
+		#{create_ip},
+		now(),
+		#{update_id},
+		#{update_ip}
+	    )
+	</insert>
+	<!-- 服务信息更新 -->
+	<update id="updateAdspClientInfo" parameterType="adspClientInfo">
+	    update adsp_client_info set 
+		version=version+1,
+		<if test="client_ip!= null and  client_ip!= '' ">
+		    client_ip=#{client_ip},
+		</if>
+		<if test="client_name!= null and  client_name!= '' ">
+		    client_name=#{client_name},
+		</if>
+		<if test="note!= null and  note!= '' ">
+		    note=#{note},
+		</if>
+		<if test="del_flag!= null and  del_flag!= '' ">
+		    del_flag=#{del_flag},
+		</if>
+		<if test="update_id!= null and  update_id!= '' ">
+		    update_id=#{update_id},
+		</if>
+		<if test="update_ip!= null and  update_ip!= '' ">
+		    update_ip=#{update_ip},
+		</if>
+		last_updated=now()
+	    where id=#{id}
+	</update>
+	<!-- 分页展示子系统信息 -->
+	<select id="findAdspClientInfoBeanIsPage" parameterType="adspClientInfo" resultType="adspClientInfoBean">
+	    select 
+	    id,
+		version,
+		client_ip,
+		client_code,
+		client_name,
+		note,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+		from adsp_client_info
+		where 1=1 
+		<if test="client_ip!= null and  client_ip!= '' ">
+		   and client_ip=#{client_ip}
+		</if>
+		<if test="client_name!= null and  client_name!= '' ">
+		   and  client_name=#{client_name}
+		</if>
+		<if test="client_code != null and  client_code != '' ">
+		   and  client_code=#{client_code}
+		</if>
+		<if test="del_flag!= null and  del_flag!= '' ">
+		   and  del_flag=#{del_flag}
+		</if>
+		<if test="date1!=null and date1!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})>=UNIX_TIMESTAMP(last_updated)]]>
+		</if>
+		<if test="date2!=null and date2!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})<=UNIX_TIMESTAMP(last_updated)]]>
+		</if>
+	    order by last_updated desc
+	</select>
+	<!--  判断 子系统信息 是否存在 -->
+	<select id="isAdspClientInfoYN" parameterType="adspClientInfo" resultType="int">
+		select count(1) from adsp_client_info where id=#{id} 
+	</select>
+	<!-- 列表展示子系统信息 -->
+	<select id="findAdspClientInfoBeanList" parameterType="adspClientInfo" resultType="adspClientInfoBean">
+	    select 
+	    id,
+		version,
+		client_ip,
+		client_code,
+		client_name,
+		note,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+		from adsp_client_info
+		where 1=1 
+		<if test="client_ip!= null and  client_ip!= '' ">
+		   and client_ip=#{client_ip}
+		</if>
+		<if test="client_name!= null and  client_name!= '' ">
+		   and  client_name=#{client_name}
+		</if>
+		<if test="client_code != null and  client_code != '' ">
+		   and  client_code=#{client_code}
+		</if>
+		<if test="del_flag!= null and  del_flag!= '' ">
+		   and  del_flag=#{del_flag}
+		</if>
+		<if test="date1!=null and date1!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})>=UNIX_TIMESTAMP(last_updated)]]>
+		</if>
+		<if test="date2!=null and date2!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})<=UNIX_TIMESTAMP(last_updated)]]>
+		</if>
+	    order by last_updated desc
+	</select>
+	<!-- 子系统信息 详情 -->
+	<select id="findAdspClientInfoBeanById" parameterType="adspClientInfo" resultType="adspClientInfoBean">
+	    select 
+	    id,
+		version,
+		client_ip,
+		client_code,
+		client_name,
+		note,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		last_updated,
+		update_id,
+		update_ip
+		from adsp_client_info
+		where id=#{id}
+	</select>
+</mapper>

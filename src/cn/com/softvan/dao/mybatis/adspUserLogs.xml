@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspUserLogsDao">
+    <!--  保存管理员操作日志 -->
+	<insert id="insertUserLogs" parameterType="adspUserLogs">
+	    insert into adsp_user_logs(
+		user_id,
+		type,
+		note,
+		date_created,
+		create_id,
+		create_ip
+	    ) values (
+		#{user_id},
+		#{type},
+		#{note},
+		now(),
+		#{create_id},
+		#{create_ip}
+	    )
+	</insert>
+	<!-- 删除管理员操作日志 -->
+	<delete id="deleteUserLogs" parameterType="adspUserLogs">
+	    delete from adsp_user_logs where id=#{id}
+	</delete>
+	<!-- 分页展示管理员操作日志 -->
+	<select id="findAdspUserLogsbeanIsPage" parameterType="adspUserLogs" resultType="adspUserLogsBean">
+	    select 
+	     id,
+		user_id,
+		type,
+		note,
+		date_created,
+		create_id,
+		create_ip
+		from adsp_user_logs
+		where 1=1 
+		<if test="type!=null and type!=''">
+		    and type=#{type}
+		</if>
+	    <if test="user_id!=null and user_id!=''">
+		    and user_id=#{user_id}
+		</if>
+		<if test="date1!=null and date1!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})>=UNIX_TIMESTAMP(date_created)]]>
+		</if>
+		<if test="date2!=null and date2!=''">
+		     <![CDATA[ and UNIX_TIMESTAMP(#{date1})<=UNIX_TIMESTAMP(date_created)]]>
+		</if>
+	    order by date_created desc
+	</select>
+	<!-- 管理员操作日志 详情 -->
+	<select id="findAdspUserLogsbeanById" parameterType="adspUserLogs" resultType="adspUserLogsBean">
+	    select 
+	     id,
+		user_id,
+		type,
+		note,
+		date_created,
+		create_id,
+		create_ip
+		from adsp_user_logs
+		where id=#{id}
+	</select>
+</mapper>

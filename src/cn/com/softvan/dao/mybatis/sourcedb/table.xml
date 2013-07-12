@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.sourcedb.ITableDao">
+	<!-- 查询系统(表)列表 -->
+	<select id="findTableList" parameterType="table"  resultType="tableColumnsBean" >
+		SELECT
+		tab.TABLE_SCHEMA,
+		tab.TABLE_NAME,
+		tab.TABLE_COMMENT,
+		tab.VERSION,
+		tab.TABLE_ROWS,
+		tab.AVG_ROW_LENGTH,
+		tab.DATA_LENGTH,
+		tab.CREATE_TIME,
+		tab.UPDATE_TIME,
+		tab.TABLE_TYPE
+		from information_schema.TABLES tab
+		<where>
+			<if test="TABLE_SCHEMA != '' and TABLE_SCHEMA != null">
+				tab.TABLE_SCHEMA=#{TABLE_SCHEMA}
+			</if>
+			<if test="TABLE_NAME != '' and TABLE_NAME != null">
+				and tab.TABLE_NAME like concat(#{TABLE_NAME},'%')
+			</if>
+		</where>
+		order by tab.TABLE_NAME ASC
+	</select>
+	<!-- 查询系统(表)列表 根据数据库名称集合 -->
+	<select id="findTableListByDBs" parameterType="String"  resultType="tableColumnsBean" >
+		select
+		tab.table_schema,
+		tab.table_name,
+		tab.table_comment,
+		tab.version,
+		tab.table_rows,
+		tab.avg_row_length,
+		tab.data_length,
+		tab.create_time,
+		tab.update_time,
+		tab.TABLE_TYPE
+		from information_schema.tables tab
+		where tab.table_schema in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item} 
+		</foreach>
+		order by tab.table_schema ASC
+	</select>
+	<!-- 查询系统(表)(分页)列表 -->
+	<select id="findTableIsPage"  parameterType="table" resultType="tableColumnsBean">
+		SELECT
+		tab.TABLE_SCHEMA,
+		tab.TABLE_NAME,
+		tab.TABLE_COMMENT,
+		tab.VERSION,
+		tab.TABLE_ROWS,
+		tab.AVG_ROW_LENGTH,
+		tab.DATA_LENGTH,
+		tab.CREATE_TIME,
+		tab.UPDATE_TIME,
+		tab.TABLE_TYPE
+		from information_schema.TABLES tab
+		where
+		TABLE_SCHEMA='tcdb'
+		order by tab.TABLE_NAME ASC
+	</select>
+	<!-- 触发器页面查询条件查询 -->
+	<select id="findTablesBySql" parameterType="tableColumnsBean" resultType="tableColumnsBean">
+		SELECT
+		tab.TABLE_SCHEMA as table_schema,
+		tab.TABLE_NAME as table_name,
+		tab.TABLE_COMMENT as table_comment,
+		tab.VERSION as version,
+		tab.TABLE_ROWS as table_rows,
+		tab.AVG_ROW_LENGTH as avg_row_length,
+		tab.DATA_LENGTH as data_length,
+		tab.CREATE_TIME as create_time,
+		tab.UPDATE_TIME as update_time,
+		tab.TABLE_TYPE
+		from information_schema.TABLES tab
+		<where>
+			<if test="table_schema != '' and table_schema != null">
+				tab.TABLE_SCHEMA=#{table_schema}
+			</if>
+			<if test="table_name != '' and table_name != null">
+				and tab.TABLE_NAME like concat(#{table_name},'%')
+			</if>
+			<if test="query_table_name_sql != '' and query_table_name_sql !=null ">
+				and tab.TABLE_NAME  ${query_table_name_sql}
+			</if>
+			<if test="qRef_tname != '' and qRef_tname != null ">
+				and tab.TABLE_NAME like concat(#{qRef_tname},'%')
+			</if>
+		</where>
+		order by tab.TABLE_NAME ASC
+	</select>
+	
+	<!-- 表或视图列表 -->
+	<select id="findViewList" parameterType="tableColumnsBean" resultType="tableColumnsBean">
+		select 
+		tab.TABLE_SCHEMA,
+		tab.TABLE_NAME,
+		tab.TABLE_COMMENT,
+		tab.VERSION,
+		tab.TABLE_ROWS,
+		tab.AVG_ROW_LENGTH,
+		tab.DATA_LENGTH,
+		tab.CREATE_TIME,
+		tab.UPDATE_TIME,
+		tab.TABLE_TYPE
+		from information_schema.TABLES tab
+			where tab.TABLE_NAME not like 'syn_ref_%'
+			and substring(concat('syn_ref_',tab.TABLE_NAME),1,30) not in 
+				(select table1_.TABLE_NAME from information_schema.TABLES table1_ where table1_.TABLE_NAME like 'syn_ref_%')
+				
+			<if test="table_schema != null and table_schema != ''">
+				and tab.TABLE_SCHEMA=#{table_schema}
+			</if>
+			<if test="table_name != null and table_name != ''">
+				and tab.TABLE_NAME like concat(#{table_name},'%')
+			</if>
+			
+	</select>
+	
+</mapper>

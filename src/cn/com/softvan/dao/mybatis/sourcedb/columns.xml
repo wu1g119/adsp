@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.sourcedb.IColumnsDao">
+	<!-- 查询系统(表字段)列表 -->
+	<select id="findColumnsList" parameterType="columns" resultType="tableColumnsBean">
+		SELECT
+		tab.TABLE_SCHEMA,
+		tab.TABLE_NAME,
+		tab.COLUMN_NAME,
+		tab.ORDINAL_POSITION,
+		tab.COLUMN_DEFAULT,
+		tab.IS_NULLABLE,
+		tab.COLUMN_TYPE,
+		tab.COLUMN_KEY,
+		tab.COLUMN_COMMENT,
+		tab.DATA_TYPE as data_type
+		from information_schema.COLUMNS tab
+		<where>
+			<if test="TABLE_SCHEMA != '' and TABLE_SCHEMA !='' ">
+				TABLE_SCHEMA=#{TABLE_SCHEMA}
+			</if>
+			<if test="TABLE_NAME != '' and TABLE_NAME !='' ">
+				and tab.TABLE_NAME=#{TABLE_NAME}
+			</if>
+			<if test="COLUMN_KEY=='PRI'">
+				and tab.COLUMN_KEY=#{COLUMN_KEY}
+			</if>
+		</where>
+		order by
+		tab.COLUMN_KEY desc,tab.ORDINAL_POSITION ASC
+	</select>
+</mapper>

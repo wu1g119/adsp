@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.sourcedb.IStorageDataDao">
+	<!-- 增 -->
+	<insert id="insertData"  parameterType="java.util.HashMap">
+	    ${sql}
+	</insert>
+	<!-- 删 -->
+	<delete id="deleteData"  parameterType="java.util.HashMap">
+	    ${sql}
+	</delete>
+	<!-- 改 -->
+	<update id="updateData"  parameterType="java.util.HashMap">
+	    ${sql}
+	</update>
+	<!-- 检查数据信息是否存在 -->
+	<select id="isDataYN" parameterType="java.util.HashMap"  resultType="int" >
+	    ${sql}
+	</select>
+</mapper>

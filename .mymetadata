@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="adsp"
+  id="myeclipse.1331132440734"
+  context-root="/adsp"
+  j2ee-spec="5.0"
+  archive="adsp.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

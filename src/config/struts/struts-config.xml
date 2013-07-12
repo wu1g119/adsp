@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+     <package name="adsp_home" extends="adsp-default" >
+		<action name="home_*" class="homeAction" method="{1}">
+		    <result type="redirect" name="home">/cx/cx_info_init.action</result>
+		</action>
+		<action name="web_*" class="webXmlAction" method="{1}">
+		</action>
+	</package>
+    <package name="adsp_config" namespace="/cx" extends="adsp-default" >
+		<action name="cx_info_*" class="cx001Action" method="{1}" >
+			<result name="init">/jsp/config/CX001.jsp</result>
+			<result name="list1">/jsp/config/CX001_01.jsp</result>
+			<result name="list2">/jsp/config/CX001_02.jsp</result>
+			<result name="config">/jsp/config/CX001_03.jsp</result>
+			<result type="redirect" name="Q">/cx/cx_config_q_init.action</result>
+			<result type="redirect" name="U">/cx/cx_config_u_init.action</result>
+			<result type="redirect" name="I">/cx/cx_config_i_init.action</result>
+			<result type="redirect" name="D">/cx/cx_config_d_init.action</result>
+		</action>
+		<action name="cx_config_q_*" class="cx002Action" method="{1}" >
+			<result name="init">/jsp/config/CX002.jsp</result>
+			<result name="dblist">/jsp/config/CX002_01.jsp</result>
+			<result name="list1">/jsp/config/CX002_02.jsp</result>
+			<result name="list2">/jsp/config/CX002_03.jsp</result>
+			<result name="configInfo">/jsp/config/CX002_04.jsp</result>
+			<result name="testSql">/jsp/config/CX002_05.jsp</result>
+		</action>
+		<action name="cx_config_i_*" class="cx003Action" method="{1}" >
+			<result name="init">/jsp/config/CX003.jsp</result>
+			<result name="dblist">/jsp/config/CX003_01.jsp</result>
+			<result name="list1">/jsp/config/CX003_02.jsp</result>
+			<result name="list2">/jsp/config/CX003_03.jsp</result>
+			<result name="configInfo">/jsp/config/CX003_04.jsp</result>
+		</action>
+		<action name="cx_config_u_*" class="cx004Action" method="{1}" >
+			<result name="init">/jsp/config/CX002.jsp</result>
+			<result name="dblist">/jsp/config/CX002_01.jsp</result>
+			<result name="list1">/jsp/config/CX002_02.jsp</result>
+			<result name="list2">/jsp/config/CX002_03.jsp</result>
+			<result name="configInfo">/jsp/config/CX002_04.jsp</result>
+		</action>
+		<action name="cx_config_d_*" class="cx005Action" method="{1}" >
+			<result name="init">/jsp/config/CX002.jsp</result>
+			<result name="dblist">/jsp/config/CX002_01.jsp</result>
+			<result name="list1">/jsp/config/CX002_02.jsp</result>
+			<result name="list2">/jsp/config/CX002_03.jsp</result>
+			<result name="configInfo">/jsp/config/CX002_04.jsp</result>
+		</action>
+	</package>
+	<package name="adsp_logs" namespace="/lx" extends="adsp-default" >
+	    <action name="lx_info_*" class="lx001Action" method="{1}" >
+			<result name="init">/jsp/logs/LX001.jsp</result>
+		</action>
+		<action name="lx_service_*" class="lx002Action" method="{1}" >
+			<result name="init">/jsp/logs/LX002.jsp</result>
+			<result name="list1">/jsp/logs/LX002_01.jsp</result>
+		</action>
+		<action name="lx_user_*" class="lx003Action" method="{1}" >
+			<result name="init">/jsp/logs/LX003.jsp</result>
+			<result name="list1">/jsp/logs/LX003_01.jsp</result>
+		</action>
+	</package>
+	<package name="adsp_auth" namespace="/ax" extends="adsp-default" >
+	    <action name="ax_info_*" class="ax001Action" method="{1}" >
+			<result name="init">/jsp/auth/AX001.jsp</result>
+			<result name="list1">/jsp/auth/AX001_01.jsp</result>
+			<result name="list2">/jsp/auth/AX001_02.jsp</result>
+			<result name="detail">/jsp/auth/AX001_03.jsp</result>
+		</action>
+		<action name="ax_config_*" class="ax002Action" method="{1}" >
+			<result name="init">/jsp/auth/AX002.jsp</result>
+			<result name="edit">/jsp/auth/AX002_02.jsp</result>
+		</action>
+	</package>
+	<package name="adsp_config_sub" namespace="/cs" extends="adsp-default" >
+	    <action name="cs_info_*" class="cs001Action" method="{1}" >
+			<result name="init">/jsp/config/sub/CS001.jsp</result>
+		</action>
+		<action name="cs_config_*" class="cs002Action" method="{1}" >
+			<result name="init">/jsp/config/sub/CS002.jsp</result>
+			<result name="view">/jsp/config/sub/CS002_01.jsp</result>
+		</action>
+	</package>
+</struts>

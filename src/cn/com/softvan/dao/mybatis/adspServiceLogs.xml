@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspServiceLogsDao">
+	 <!--  保存接口监控日志表 -->
+	<insert id="insertServiceLogs" parameterType="adspServiceLogs">
+	    insert into adsp_service_logs(
+		version,
+		system,
+		port_name,
+		service_name,
+		service_argument,
+		process_time,
+		error_msg,
+		language,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		sql_info
+	    ) values (
+		1,
+		#{system},
+		#{port_name},
+		#{service_name},
+		#{service_argument},
+		${process_time},
+		#{error_msg},
+		#{language},
+		'0',
+		now(),
+		#{create_id},
+		#{create_ip},
+		#{sql_info}
+	    )
+	</insert>
+	<!-- 删除接口监控日志表 -->
+	<delete id="deleteServiceLogs" parameterType="adspServiceLogs">
+	    delete from adsp_service_logs where id=#{id}
+	</delete>
+	<!-- 分页展示接口监控日志表 -->
+	<select id="findAdspServiceLogsbeanIsPage" parameterType="adspServiceLogs" resultType="adspServiceLogsBean">
+	    select 
+	    id,
+		version,
+		system,
+		port_name,
+		service_name,
+		service_argument,
+		process_time,
+		error_msg,
+		language,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		sql_info
+		from adsp_service_logs
+		where 1=1 
+		<if test="system!=null and system!=''">
+		    and system=#{system}
+		</if>
+	    <if test="port_name!=null and port_name!=''">
+		    and port_name=#{port_name}
+		</if>
+		<if test="service_name!=null and service_name!=''">
+		    and service_name=#{service_name}
+		</if>
+		<if test="language!=null and language!=''">
+		    and language=#{language}
+		</if>
+		<if test="error_msg!=null and error_msg!=''">
+		    and error_msg is not null and error_msg!=''
+		</if>
+		<if test="date1!=null and date1!=''">
+		    <![CDATA[ and UNIX_TIMESTAMP(#{date1})>=UNIX_TIMESTAMP(date_created)]]>
+		</if>
+		<if test="date2!=null and date2!=''">
+		    <![CDATA[  and UNIX_TIMESTAMP(#{date1})<=UNIX_TIMESTAMP(date_created)]]>
+		</if>
+	    order by date_created desc
+	</select>
+	<!-- 接口监控日志表 详情 -->
+	<select id="findAdspServiceLogsbeanById" parameterType="adspServiceLogs" resultType="adspServiceLogsBean">
+	    select 
+	    id,
+		version,
+		system,
+		port_name,
+		service_name,
+		service_argument,
+		process_time,
+		error_msg,
+		language,
+		del_flag,
+		date_created,
+		create_id,
+		create_ip,
+		sql_info
+		from adsp_service_logs
+		where id=#{id}
+	</select>
+</mapper>

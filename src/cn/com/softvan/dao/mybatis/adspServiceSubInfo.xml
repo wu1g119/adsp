@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspServiceSubInfoDao">
+	<!--  保存子服务配置信息 -->
+	<insert id="insertAdspServiceSubInfo" parameterType="adspServiceSubInfo">
+	    insert into adsp_service_sub_info(
+		id,
+		version,
+		config_id,
+		sub_config_id,
+		node_name,
+		del_flag,
+		note,
+		date_created,
+		create_id,
+		create_ip
+	    ) values (
+		#{id},
+		0,
+		#{config_id},
+		#{sub_config_id},
+		#{node_name},
+		'0',
+		#{note},
+		now(),
+		#{create_id},
+		#{create_ip}
+	    )
+	</insert>
+	<!-- 删除 配置信息 -->
+	<delete id="deleteAdspServiceSubInfoByConfigId" parameterType="adspServiceSubInfo">
+	    delete from adsp_service_sub_info where config_id=#{config_id}
+	</delete>
+	<!-- 列表展示子服务配置信息 -->
+	<select id="findAdspServiceSubInfoBeanList" parameterType="adspServiceSubInfo" resultType="adspServiceSubInfoBean">
+	    select 
+	    t1.id,
+		t1.version,
+		t1.config_id,
+		t2.name as config_name,
+		t1.sub_config_id,
+		t3.name as sub_config_name,
+		t1.node_name,
+		t1.del_flag,
+		t1.note,
+		t1.date_created,
+		t1.create_id,
+		t1.create_ip
+		from adsp_service_sub_info t1
+		left join adsp_service_config_info t2 on (t1.config_id=t2.id)
+		left join adsp_service_config_info t3 on (t1.sub_config_id=t3.id)
+		where 1=1 
+		<if test="config_id!= null and  config_id!= '' ">
+		   and t1.config_id=#{config_id}
+		</if>
+	    order by t1.date_created desc
+	</select>
+	<!-- 列表展示 子服务集合 -->
+	<select id="findAdspServiceConfigInfoBeanList" parameterType="adspServiceSubInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+		 t2.name,
+		 t1.node_name
+		from adsp_service_sub_info t1
+		left join adsp_service_config_info t2 on (t1.sub_config_id=t2.id)
+		where 1=1 
+		   and t1.config_id=#{config_id}
+		   and t2.del_flag='0'
+	</select>
+</mapper>

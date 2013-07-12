@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:jaxws="http://cxf.apache.org/jaxws" 
+		xmlns:jaxrs="http://cxf.apache.org/jaxrs" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://cxf.apache.org/jaxws 
+		http://cxf.apache.org/schemas/jaxws.xsd
+		http://cxf.apache.org/jaxrs 
+ 		http://cxf.apache.org/schemas/jaxrs.xsd">
+    <!-- action基类 -->
+	<bean id="baseAction" class="cn.com.softvan.web.action.BaseAction" scope="prototype">
+		<property name="userLogsManager" ref="userLogsManager"></property>
+		<property name="serviceLogsManager" ref="serviceLogsManager"></property>
+	</bean>
+    <!-- 系统登陆与系统首页 Action -->
+	<bean id="homeAction" class="cn.com.softvan.web.action.HomeAction" scope="prototype" parent="baseAction"/>
+	<!-- (初始化 页面)服务配置Action -->
+	<bean id="cx001Action" class="cn.com.softvan.web.action.config.CX001Action" scope="prototype" parent="baseAction">
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- (查询)服务配置 Action -->
+	<bean id="cx002Action" class="cn.com.softvan.web.action.config.CX002Action" scope="prototype" parent="baseAction">
+		<property name="sourceDataManager" ref="sourceDataManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- (新增)服务配置 Action -->
+	<bean id="cx003Action" class="cn.com.softvan.web.action.config.CX003Action" scope="prototype" parent="baseAction">
+		<property name="sourceDataManager" ref="sourceDataManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- (修改)服务配置 Action -->
+	<bean id="cx004Action" class="cn.com.softvan.web.action.config.CX004Action" scope="prototype" parent="baseAction">
+		<property name="sourceDataManager" ref="sourceDataManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- (删除)服务配置 Action -->
+	<bean id="cx005Action" class="cn.com.softvan.web.action.config.CX005Action" scope="prototype" parent="baseAction">
+		<property name="sourceDataManager" ref="sourceDataManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- 系统日志初始化页面 Action -->
+	<bean id="lx001Action" class="cn.com.softvan.web.action.logs.LX001Action" scope="prototype" parent="baseAction">
+	</bean>
+	<!-- 接口监控日志Action -->
+	<bean id="lx002Action" class="cn.com.softvan.web.action.logs.LX002Action" scope="prototype" parent="baseAction">
+		
+	</bean>
+	<!-- 管理员操作日志Action -->
+	<bean id="lx003Action" class="cn.com.softvan.web.action.logs.LX003Action" scope="prototype" parent="baseAction">
+	</bean>
+	<!-- HTTP接口服务Action -->
+	<bean id="webXmlAction" class="cn.com.softvan.web.action.WebXmlAction" scope="prototype" parent="baseAction">
+		<property name="webServiceManager"  ref="webServiceManager"/>
+	</bean>
+	<!-- (信息显示页面)客户端权限设置 Action -->
+	<bean id="ax001Action" class="cn.com.softvan.web.action.auth.AX001Action" scope="prototype" parent="baseAction">
+		<property name="clientInfoManager" ref="clientInfoManager"></property>
+		<property name="clientAuthorityInfoManager" ref="clientAuthorityInfoManager"></property>
+	</bean>
+	<!-- (信息编辑页面)客户端权限设置 Action -->
+	<bean id="ax002Action" class="cn.com.softvan.web.action.auth.AX002Action" scope="prototype" parent="baseAction">
+		<property name="clientInfoManager" ref="clientInfoManager"></property>
+		<property name="clientAuthorityInfoManager" ref="clientAuthorityInfoManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- 子服务配置页面(展示) -->
+	<bean id="cs001Action" class="cn.com.softvan.web.action.config.sub.CS001Action" scope="prototype" parent="baseAction">
+		<property name="serviceSubInfoManager" ref="serviceSubInfoManager"></property>
+	</bean>
+	<!-- 子服务配置页面 (新增 编辑)-->
+	<bean id="cs002Action" class="cn.com.softvan.web.action.config.sub.CS002Action" scope="prototype" parent="baseAction">
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+		<property name="serviceSubInfoManager" ref="serviceSubInfoManager"></property>
+	</bean>
+</beans>

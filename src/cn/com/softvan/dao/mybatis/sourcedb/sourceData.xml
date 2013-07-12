@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.sourcedb.ISourceDataDao">
+	<!-- <cache eviction="FIFO" flushInterval="30000" size="1000" readOnly="false" type="cn.com.softvan.dao.utils.MybatisRedisCache" /> -->
+    <!-- test SQL -->
+	<select id="testSqlIsPage" parameterType="java.util.HashMap"  resultType="java.util.HashMap">
+	    select 
+	    ${column}
+	    from ${table} 
+	    ${join} 
+	    where 1=1 
+	    <if test="where!=null and where!=''">
+	       and (${where}) 
+	    </if>
+	    <if test="inputs_sql!=null and inputs_sql!=''">
+	       and (${inputs_sql})
+	    </if>
+	    ${order} 
+	</select>
+	<!-- 获取数据 flushCache="false" useCache="true"-->
+	<select id="getData" parameterType="java.util.HashMap"  resultType="java.util.HashMap">${sql}</select>
+	<!-- 获取数据(分页) flushCache="false" useCache="true"-->
+	<select id="getDataIsPage" parameterType="java.util.HashMap"  resultType="java.util.HashMap">${sql}</select>
+</mapper>

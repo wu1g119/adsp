@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:jaxws="http://cxf.apache.org/jaxws" 
+		xmlns:jaxrs="http://cxf.apache.org/jaxrs" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/jee 
+		http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://cxf.apache.org/jaxws 
+		http://cxf.apache.org/schemas/jaxws.xsd
+		http://cxf.apache.org/jaxrs 
+ 		http://cxf.apache.org/schemas/jaxrs.xsd">
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<context:annotation-config/>
+	<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:redis-manager-config.properties" ignore-unresolvable="true"/>
+	<!-- <context:property-placeholder location="classpath:memcached-manager-config.properties" ignore-unresolvable="true"/> -->
+	<!-- 线程池 -->
+	<bean id ="taskExecutor"  class ="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" > 
+	    <!-- 线程池维护线程的最少数量 -->
+	    <property name ="corePoolSize" value="15" /> 
+	    <!-- 线程池维护线程所允许的空闲时间 -->
+	    <property name ="keepAliveSeconds" value="300" /> 
+	    <!-- 线程池维护线程的最大数量 -->
+	    <property name ="maxPoolSize" value="20" /> 
+	    <!-- 线程池所使用的缓冲队列  (卡不死机)-->
+	    <property name ="queueCapacity" value="500" /> 
+ 	</bean> 
+	<!-- JTA事务管理器 -->
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+		<description>UserTransactionImp</description>
+		<property name="transactionTimeout" value="300"/>
+	</bean>
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+		<description>UserTransactionManager</description>
+		<property name="forceShutdown" value="true"/>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+		<description>JtaTransactionManager</description>
+		<property name="transactionManager" ref="atomikosTransactionManager"/>
+		<property name="userTransaction" ref="atomikosUserTransaction"/>
+		<property name="allowCustomIsolationLevels" value="true"/>
+	</bean>
+	 
+	<!-- 声明式事务 @Transactional -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- *****平台业务库连接信息开始************************************ -->
+	<bean id="dataSource_db1" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close">
+        <description>DB1_XA_DATASOURCE</description>
+        <property name="uniqueResourceName">
+            <value>MysqlXADataSource</value>
+        </property>
+        <property name="xaDataSourceClassName">
+            <value>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</value>
+        </property>
+        <property name="xaProperties">
+            <props>
+                <prop key="user">${db1.username}</prop>
+                <prop key="password">${db1.password}</prop>
+                <prop key="URL">${db1.url}</prop>
+            </props>
+        </property>
+		<property name="testQuery"><value>select 1</value></property>
+		<property name="poolSize"><value>${db1.poolSize}</value></property>
+		<property name="minPoolSize"><value>${db1.minPoolSize}</value></property>  
+        <property name="maxPoolSize"><value>${db1.maxPoolSize}</value></property>      
+        <property name="loginTimeout"><value>${db1.loginTimeout}</value></property>    
+        <property name="reapTimeout"><value>${db1.reapTimeout}</value></property>
+    </bean>
+	<!-- MYSQL_MYBATIS管理库 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource_db1" />
+	</bean>
+	<!-- 平台业务库**基础dao -->
+	<bean id="baseDao" class="org.mybatis.spring.mapper.MapperFactoryBean" scope="prototype">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<!-- 子系统权限配置表DAO -->
+	<bean id="adspClientAuthorityInfoDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspClientAuthorityInfoDao" />
+	</bean>
+	<!-- 子系统列表DAO -->
+	<bean id="adspClientInfoDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspClientInfoDao" />
+	</bean>
+	<!-- 字典表DAO -->
+	<bean id="adspDataDictionaryDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspDataDictionaryDao" />
+	</bean>
+	<!-- 服务配置信息表DAO -->
+	<bean id="adspServiceConfigInfoDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspServiceConfigInfoDao" />
+	</bean>
+	<!-- 接口监控日志表DAO -->
+	<bean id="adspServiceLogsDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspServiceLogsDao" />
+	</bean>
+	<!-- 子服务配置信息表DAO -->
+	<bean id="adspServiceSubInfoDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspServiceSubInfoDao" />
+	</bean>
+	<!-- 系统用户表DAO -->
+	<bean id="adspUserInfoDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspUserInfoDao" />
+	</bean>
+	<!-- 管理员操作日志表DAO -->
+	<bean id="adspUserLogsDao"  parent="baseDao">
+		<property name="mapperInterface" value="cn.com.softvan.dao.IAdspUserLogsDao" />
+	</bean>
+	<!-- *****平台业务库连接信息结束************************************ -->
+	<!-- =================Redis缓存==============begin==================== -->
+	 <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+        <property name="maxActive" value="${redis.maxActive}"></property>  
+        <property name="maxIdle" value="${redis.maxIdle}"></property>  
+        <property name="maxWait" value="${redis.maxWait}"></property>  
+        <property name="minEvictableIdleTimeMillis" value="300000"></property>  
+        <property name="numTestsPerEvictionRun" value="3"></property>  
+        <property name="timeBetweenEvictionRunsMillis" value="60000"></property>  
+        <!-- 当“连接池”中active数量达到阀值时，即“链接”资源耗尽时，连接池需要采取的手段, 默认为1：
+		 -> 0 : 抛出异常，
+		 -> 1 : 阻塞，直到有可用链接资源
+		 -> 2 : 强制创建新的链接资源 -->
+        <property name="whenExhaustedAction" value="2"></property>  
+    </bean>  
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">  
+        <!-- config -->  
+        <constructor-arg ref="jedisPoolConfig"></constructor-arg>  
+        <!-- host -->  
+        <constructor-arg value="${redis.host}"></constructor-arg>  
+        <!-- port -->  
+        <constructor-arg value="${redis.port}"></constructor-arg>  
+        <!-- timeout -->  
+        <constructor-arg value="${redis.timeout}"></constructor-arg>  
+        <!-- password -->  
+        <constructor-arg value="${redis.pass}"></constructor-arg>  
+        <!-- database index -->  
+        <constructor-arg value="12"></constructor-arg>        
+    </bean>
+	<!-- redis缓存帮助类 -->
+	<bean id="jedisHelper" class="cn.com.softvan.common.JedisHelper">
+		<property name="jedisPool" ref="jedisPool"></property>
+	</bean>
+	<!-- =================Redis缓存==============end==================== -->
+	<!-- =================Memcached缓存客户端==============begin==================== 
+    <bean name="memcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+          <constructor-arg>
+                  <list>
+                          <bean class="java.net.InetSocketAddress">
+                                  <constructor-arg>
+                                          <value>${memcached.ip1}</value>
+                                  </constructor-arg>
+                                  <constructor-arg>
+                                          <value>${memcached.port1}</value>
+                                  </constructor-arg>
+                          </bean>
+                  </list>
+          </constructor-arg>
+          <constructor-arg>
+                  <list>
+                          <value>1</value>
+                  </list>
+          </constructor-arg>
+          <property name="connectionPoolSize" value="1"></property>
+          <property name="commandFactory">
+                  <bean class="net.rubyeye.xmemcached.command.TextCommandFactory"></bean>
+          </property>
+          <property name="sessionLocator">
+                  <bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator"></bean>
+          </property>
+          <property name="transcoder">
+                  <bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+          </property>
+      </bean>
+    <bean name="memcachedClient" factory-bean="memcachedClientBuilder"
+               factory-method="build" destroy-method="shutdown"/>
+	<bean id="cacheHelper" class="cn.com.softvan.common.CacheHelper">
+		<property name="memcachedClient" ref="memcachedClient"></property>
+	</bean>
+	-->
+	<!-- =================Memcached缓存客户端==============end==================== -->
+	<!-- ========================业务处理类================================================== -->
+	<!-- manager基类 -->
+	<bean id="baseManager" class="cn.com.softvan.service.BaseManager" scope="prototype">
+		<property name="userLogsManager" ref="userLogsManager"></property>
+		<property name="serviceLogsManager" ref="serviceLogsManager"></property>
+		<property name="jedisHelper" ref="jedisHelper"></property>
+		<!-- <property name="cacheHelper" ref="cacheHelper" /> -->
+		<property name="taskExecutor" ref="taskExecutor"></property>
+		<property name="adspServiceLogsDao" ref="adspServiceLogsDao"></property>
+	</bean>
+	<!-- 管理员操作日志 业务处理 -->
+	<bean id="userLogsManager" class="cn.com.softvan.service.impl.UserLogsManager" scope="prototype">
+		<property name="adspUserLogsDao" ref="adspUserLogsDao"></property>
+	</bean>
+	<!-- 接口监控日志 业务处理 -->
+	<bean id="serviceLogsManager" class="cn.com.softvan.service.impl.ServiceLogsManager" scope="prototype">
+		<property name="adspServiceLogsDao" ref="adspServiceLogsDao"></property>
+	</bean>
+	<!--服务配置 业务处理  -->
+	<bean id="serviceConfigManager" class="cn.com.softvan.service.impl.ServiceConfigManager" scope="prototype"  parent="baseManager">
+		<property name="adspServiceConfigInfoDao" ref="adspServiceConfigInfoDao"></property>
+		<property name="sourceDataDao" ref="sourceDataDao"></property>
+	</bean>
+	<!-- 子服务配置  业务处理 -->
+	<bean id="serviceSubInfoManager" class="cn.com.softvan.service.impl.ServiceSubInfoManager" scope="prototype"  parent="baseManager">
+		<property name="adspServiceSubInfoDao" ref="adspServiceSubInfoDao"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+	</bean>
+	<!-- 接口调用子系统  业务处理 -->
+	<bean id="clientInfoManager" class="cn.com.softvan.service.impl.ClientInfoManager" scope="prototype"  parent="baseManager">
+		<property name="adspClientInfoDao" ref="adspClientInfoDao"></property>
+		<property name="clientAuthorityInfoManager" ref="clientAuthorityInfoManager"></property>
+	</bean>
+	<!-- 接口调用子系统权限配置  业务处理 -->
+	<bean id="clientAuthorityInfoManager" class="cn.com.softvan.service.impl.ClientAuthorityInfoManager" scope="prototype"  parent="baseManager">
+		<property name="adspClientAuthorityInfoDao" ref="adspClientAuthorityInfoDao"></property>
+	</bean>
+	<!--接口服务 业务处理  -->
+	<bean id="webServiceManager" class="cn.com.softvan.service.impl.WebServiceManager" scope="prototype" init-method="initJedis"  parent="baseManager">
+		<property name="sourceDataManager" ref="sourceDataManager"></property>
+		<property name="storageDataManager" ref="storageDataManager"></property>
+		<property name="clientInfoManager" ref="clientInfoManager"></property>
+		<property name="serviceConfigManager" ref="serviceConfigManager"></property>
+		<property name="serviceSubInfoManager" ref="serviceSubInfoManager"></property>
+	</bean>
+	<!-- ==================================CXF==================being=================================================== -->
+	<!-- -记录日志 
+	<bean id="inLoggingInterceptor"
+		class="org.apache.cxf.interceptor.LoggingInInterceptor">
+		<constructor-arg value="receive" />
+	</bean>-->
+	<!-- -记录日志 
+	<bean id="outLoggingInterceptor"
+		class="org.apache.cxf.interceptor.LoggingOutInterceptor" />-->
+	<!-- 接口处理类 -->
+	<bean id="webXmlImpl" class="cn.com.softvan.cxf.WebXmlImpl">
+	    <property name="webServiceManager"  ref="webServiceManager"/>
+	</bean>	
+	<jaxws:server id="webxml"
+			serviceClass="cn.com.softvan.cxf.WebXmlImpl"
+			address="/webxml">
+			<!-- 要暴露的 bean 的引用 -->
+			<jaxws:serviceBean>
+				<ref bean="webXmlImpl" />
+			</jaxws:serviceBean>
+			<!-- 快速信息集(听起来不错 但是俺不知道怎么用)
+			 <jaxws:features>
+				<bean class="org.apache.cxf.feature.FastInfosetFeature" /> 
+			</jaxws:features>
+			 -->
+			<!-- 登陆 
+			<jaxws:inInterceptors>
+				<ref bean="inLoggingInterceptor" />
+			</jaxws:inInterceptors>-->
+			<!-- 登出 
+			<jaxws:outInterceptors>
+				<ref bean="outLoggingInterceptor" />
+			</jaxws:outInterceptors>-->
+	</jaxws:server>
+	<!-- ==================================CXF==================end=================================================== -->
+
+</beans>

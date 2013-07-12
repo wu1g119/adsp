@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+   <!-- 指定默认编码集,作用于HttpServletRequest的setCharacterEncoding方法 和freemarker 、velocity的输出 -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <!-- 该属性指定需要Struts 2处理的请求后缀，该属性的默认值是action，即所有匹配*.action的请求都由Struts2处理。
+    如果用户需要指定多个请求后缀，则多个后缀之间以英文逗号（,）隔开。 -->
+    <constant name="struts.action.extension" value="do,action,go"/>
+    <!-- 设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好关闭 -->
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+    <constant name="struts.devMode" value="true" />
+     <!-- 默认的视图主题 -->
+    <constant name="struts.ui.theme" value="simple" />
+    <!-- 与spring集成时，指定由spring负责action对象的创建 -->
+    <constant name="struts.objectFactory" value="spring" />
+ 	<!-- 该属性设置Struts 2是否支持动态方法调用，该属性的默认值是true。如果需要关闭动态方法调用，则可设置该属性为false。 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+	 <!--上传文件的大小限制 B-->
+	<constant name="struts.multipart.maxSize" value="10701096"/>
+	<!-- 基类package，定义了所有action共用的拦截器栈 -->
+	<package name="adsp-default" extends="struts-default"
+		abstract="true">
+		<!-- 拦截器配置 -->
+		<interceptors>
+			<!-- 自定义的异常和执行时间拦截器，会把异常信息和执行时间过长的action的信息记录到日志里 -->
+			<interceptor name="exceptionAndExecuteTimeInterceptor"
+				class="cn.com.softvan.filter.ExceptionAndExecuteTimeInterceptor">
+			</interceptor>
+			<!-- 定义默认拦截器栈 -->
+			<interceptor-stack name="adsp-default">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionAndExecuteTimeInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="adsp-default" />
+
+		<!-- 全局 results配置 -->
+		<global-results>
+			<result name="exception">/jsp/error/exception.jsp</result>
+			<result name="error">/jsp/error/500.jsp</result> 
+			<result name="login">/index.jsp</result>
+		</global-results>
+		 <global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception" />
+			<exception-mapping result="error" exception="java.lang.Throwable" /> 
+		</global-exception-mappings>
+	</package>
+	<!-- 验证码图片 -->
+	<package name="verifyImage"  extends="adsp-default">
+		<action name="verifyImage" class="cn.com.softvan.web.action.VerifyImageAction" method="verifyImage"></action>
+	</package>
+	<!-- 加载所有struts开头的配置文件  -->
+	<include file="config/struts/struts*.xml" />
+</struts>

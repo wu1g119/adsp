@@ -1,0 +1,410 @@
+body {
+	margin:0;padding:0;
+	height: 100%;
+}
+ a {
+	cursor: pointer;
+}
+ a:link {
+	margin: 0px;
+	color: #374778;
+	text-decoration: none;
+}
+a:VISITED{
+	margin: 0px;
+	color: #FF0000;
+	text-decoration: none;
+}
+ a:hover {
+	margin: 0px;
+	color: #FF0000;
+	text-decoration: none;
+}
+a:ACTIVE{
+	margin: 0px;
+	color: #FF0000;
+	text-decoration: none;
+}
+.wrap{
+	
+}
+.fl{float: left;}
+.fr{float: right;}
+.hide{display: none;}
+/*页头begin*/
+.main_top {
+	background: url(../images/main_top.gif);
+	height: 105px;
+	position: top left;
+}
+
+.main_top .top_U {
+	height: 35px;
+	width: 100%;
+}
+
+.main_top .U_left {
+	width: 30%;
+	height: 35px;
+	float: left;
+}
+
+.main_top .U_left_U {
+	height: 10px;
+	width: 40px;
+}
+
+.main_top .U_left_Da {
+	width: 40px;
+	height: 25px;
+	float: left
+}
+
+.main_top .U_left_Db {
+	background: url(../images/main_top_leftUa.gif);
+	width: 150px;
+	height: 25px;
+	float: left;
+}
+.main_top .U_left_Dba{
+	color:#2F5E9D;
+	font-weight: bold;
+	height:25px;
+	font-family: "华文新魏";
+	text-align:center;
+	line-height:25px;
+
+}
+.main_top .U_left_Dc {
+	background: url(../images/main_top_leftUb.gif);
+	width: 25px;
+	height: 25px;
+	float: left;
+}
+
+.main_top .U_right {
+	height: 35px;
+	float: right;
+	width: 70%;
+}
+
+.main_top .U_right_U {
+	background: url(../images/main_top_rightUb.gif);
+	height: 25px;
+	line-height: 25px;
+}
+
+.main_top .U_right_Ua {
+	background: url(../images/main_top_rightUa.gif);
+	width: 40px;
+	height: 25px;
+	float: left;
+}
+
+.main_top .U_right_Ubl {
+	float: left;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 22px;
+	font-family: "华文新魏"
+}
+
+.main_top .U_right_Ubr {
+	width:auto;
+	float: right;
+	color: #FFFFFF;
+	font-size: 15px;
+	margin-right: 10px;
+}
+.main_top .U_right_Ubr_l,.main_top .U_right_Ubr_c,.main_top .U_right_Ubr_r{
+	float: left;height: 22px;margin-top: 1px;
+}
+.main_top .U_right_Ubr_l {
+}
+.main_top .U_right_Ubr_c {
+	padding-left:10px;
+	padding-right:0px;
+	color: #eee;
+	font-weight:bolder;
+	font-size: 15px;
+}
+.user_name,.user_msg,.user_help,.user_logout{
+	background: url(../images/main_bg.gif) no-repeat;float: left;height: 22px;padding-right: 10px;
+}
+.user_name{
+	padding-left: 15px;
+	background-position:0px -1897px;;
+}
+.user_msg{
+	padding-left: 20px;
+	background-position:0px -2032px;
+}
+.user_help{
+	padding-left: 20px;
+	background-position:0px -1613px;
+}
+.user_logout{
+	padding-left: 15px;
+	background-position:0px -186px;
+}
+.main_top .U_right_Ubr_r {
+}
+.main_top .U_right_D {
+	height: 10px;
+}
+
+.main_top .top_D {
+	background: url(../images/main_top_rightDa.gif);
+	height: 60px;
+	width: 100%;
+}
+
+.main_top .top_D_left {
+	float: left;
+	height:60px;
+	width:40%;
+	text-align:center;
+	
+	
+}
+
+.main_top .top_D_right {
+	float: right;
+	height:60px;
+	line-height:60px;
+	white-space: nowrap;
+}
+.top_D_right .dt_tt{
+	margin:0px;
+	padding:0px;
+	display: block;
+	color:#2F5E9D;
+	float:left;
+	text-align:center;
+	background:url(../images/top_button_bj.gif) no-repeat;
+	width:75px;
+	font-weight: bold;
+	font-size: 15px;
+	font-family: "华文新魏";
+}
+
+.main_top .D_left_left {
+	float: left;
+	line-height:60px;
+	width:100px;
+	font-weight: bold;
+	font-size: 50px;
+	font-family: "华文新魏";
+}
+
+.main_top .D_left_right {
+	height:60px;
+	float: left;
+	text-align:center;
+}
+.main_top .D_left_right_U {
+	height:10px;
+}
+.main_top .D_left_right_C {
+	color:#2F5E9D;
+	height:20px;
+	font-weight: bold;
+	font-size: 22px;
+	font-family: "华文新魏";
+	line-height:20px;
+}
+
+.main_top .D_left_right_D {
+	color:#2F5E9D;
+	height:30px;
+	font-family: "华文新魏"
+}
+
+/*页头end*/ /*页脚begin*/
+#footer {
+	clear:both;
+	color:#2F5E9D;
+	height: 32px;
+	background: url(../images/footer_bj.gif);
+	line-height: 32px;
+}
+/*页脚end*/
+
+
+
+
+td,th {font-size: 12px;text-align: left;}
+
+input,select {
+	background-color: #FFFFFF;margin: 0px;margin: 0px;;
+}
+textarea{
+	background-color: #FFFFFF;
+	overflow-y:visible;
+	border: 0px;
+	width:100%;
+}
+
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,input,textarea,p,blockquote,th,td,img
+{
+	margin: 0;
+	padding: 0;
+}
+.tablexx {
+	border-left: 1px solid #eaeaea;
+	border-right: 1px solid #eaeaea;
+	border-bottom: 1px solid #eaeaea;
+	border-top: 1px solid #fff;
+}
+
+.tablexx th {
+	font-size: 12px;
+	color: #347abf;
+	padding: 5px;
+	text-align: left;
+	background-color: #f0f8ff;
+	border: 1px solid #eaeaea;
+}
+
+.tablexx td {
+	font-size: 12px;
+	padding: 5px;
+	text-align: left;
+	border: 1px solid #eaeaea;
+}
+.tablexx tr:hover {
+	background:#EFCBD8;
+}
+.tablexx tr:hover td{background:none;}
+
+.textw2012{
+	border: 1px solid #999;
+}
+.w10{
+	width: 10%;
+}
+.w20{
+	width: 20%;
+}
+.w30{
+	width: 30%;
+}
+.w40{
+	width: 40%;
+}
+.w50{
+	width: 50%;
+}
+.w60{
+	width: 60%;
+}
+.w70{
+	width: 70%;
+}
+.w80{
+	width: 80%;
+}
+.w90{
+	width: 90%;
+}
+.w100{
+	width: 100%;
+}
+.checkTR{background:#EFCBD8;}
+label.invalid {
+	color: red;
+	padding-left: 18px;
+	vertical-align: top;
+	width: 196px;
+	background: url("../images/main_bg.gif") 0px -1352px
+		no-repeat;
+}
+
+label.valid {
+	background: url("../images/main_bg.gif") 0px -1377px
+		no-repeat;
+	color: #065FB9;
+}
+/*按钮样式*/
+.btn {
+	background: url(../images/button_bj.gif) no-repeat;
+	font-weight: bold;
+	font-size: 11px;
+	color: #3A688A;
+	width: 76px;
+	height: 24px;
+	line-height: 24px;
+	border: 0px solid #000;
+	margin-left: 10px;
+	cursor: pointer;
+}
+.btn1 {
+	background: url(../images/button_bj1.gif) no-repeat;
+	font-weight: bold;
+	font-size: 11px;
+	color: #999;
+	width: 76px;
+	height: 24px;
+	line-height: 24px;
+	border: 0px solid #000;
+	margin-left: 10px;
+	cursor: pointer;
+}
+/*页面主体*/
+.subject{min-height: 500px;height: 100%;width: 100%;margin-top: 10px;}
+
+.chackTextarea-area{width:100%;height:300px;border: 1px solid #999; overflow-y:visible }
+
+/**json 格式化*/
+.Canvas
+{
+ font: 10pt Georgia;
+ background-color:#ECECEC;
+ color:#000000;
+ border:solid 1px #CECECE;
+}
+.ObjectBrace
+{
+ color:#00AA00;
+ font-weight:bold;
+}
+.ArrayBrace
+{
+ color:#0033FF;
+ font-weight:bold;
+}
+.PropertyName
+{
+ color:#CC0000;
+ font-weight:bold;
+}
+.String
+{
+ color:#007777;
+}
+.Number
+{
+ color:#AA00AA;
+}
+.Boolean
+{
+  color:#0000FF;
+}
+.Function
+{
+  color:#AA6633;
+  text-decoration:italic;
+}
+.Null
+{
+  color:#0000FF;
+}
+.Comma
+{
+  color:#000000;
+  font-weight:bold;
+}
+PRE.CodeContainer{
+  margin-top:0px;
+  margin-bottom:0px;
+}

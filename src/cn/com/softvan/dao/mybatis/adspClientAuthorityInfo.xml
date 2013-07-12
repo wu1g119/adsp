@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.softvan.dao.IAdspClientAuthorityInfoDao">
+	<!--  保存子系统权限配置信息 -->
+	<insert id="insertAdspClientAuthorityInfo" parameterType="adspClientAuthorityInfo">
+	    insert into adsp_client_authority_info(
+		id,
+		client_id,
+		service_id,
+		service_name,
+		note,
+		date_created,
+		create_id,
+		create_ip
+	    ) values (
+		#{id},
+		#{client_id},
+		#{service_id},
+		#{service_name},
+		#{note},
+		now(),
+		#{create_id},
+		#{create_ip}
+	    )
+	</insert>
+	<!-- 删除权限配置信息 -->
+	<delete id="deleteAdspClientAuthorityInfoByClientId" parameterType="adspClientAuthorityInfo">
+	    delete from adsp_client_authority_info where client_id=#{client_id}
+	</delete>
+	<!-- 列表展示子系统权限配置信息 -->
+	<select id="findAdspClientAuthorityInfoBeanList" parameterType="adspClientAuthorityInfo" resultType="adspClientAuthorityInfoBean">
+	    select 
+	    id,
+		client_id,
+		service_id,
+		service_name,
+		note,
+		date_created,
+		create_id,
+		create_ip
+		from adsp_client_authority_info
+		where 1=1 
+		<if test="client_id!= null and  client_id!= '' ">
+		   and client_id=#{client_id}
+		</if>
+		<if test="service_name!= null and  service_name!= '' ">
+		   and  service_name=#{service_name}
+		</if>
+		<if test="service_id!= null and  service_id!= '' ">
+		   and  service_id=#{service_id}
+		</if>
+	    order by date_created desc
+	</select>
+	<!-- 列表展示 客户端有权限访问的服务集合 -->
+	<select id="findAdspServiceConfigInfoBeanList" parameterType="adspClientAuthorityInfo" resultType="adspServiceConfigInfoBean">
+	    select 
+	    t2.id,
+		 t2.version,
+		 t2.type,
+		 t2.db_name,
+		 t2.db_table_name,
+		 t2.name,
+		 t2.config,
+		 t2.note,
+		 t2.del_flag,
+		 t2.status,
+		 t2.date_created,
+		 t2.create_id,
+		 t2.create_ip,
+		 t2.last_updated,
+		 t2.update_id,
+		 t2.update_ip
+		from adsp_client_authority_info t1
+		left join adsp_service_config_info t2 on (t1.service_name=t2.name)
+		where 1=1 
+		   and t1.client_id=#{client_id}
+		<if test="service_name!= null and  service_name!= '' ">
+		   and  t1.service_name=#{service_name}
+		</if>
+		<if test="service_id!= null and  service_id!= '' ">
+		   and  t1.service_id=#{service_id}
+		</if>
+			and t2.del_flag='0'
+	</select>
+</mapper>
