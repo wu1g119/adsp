@@ -184,14 +184,14 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 					AdspClientInfoBean clientBean=(AdspClientInfoBean) jedisHelper.get("client_"+system);
 					//ip认证
 					if(clientBean!=null&&ip.equals(clientBean.getClient_ip())){
-						//获取调用系统可调用服务集合
-						Map<String,String> serviceMaps=(Map<String, String>) jedisHelper.get("auth_"+system);
-						//判断客户端权限
-						if(serviceMaps.get(serviceName)!=null){
-							//获取服务配置信息
-							ConfigJsonBean bean=(ConfigJsonBean) jedisHelper.get("service_"+serviceName);
-							//
-							if(bean!=null){
+						//获取服务配置信息
+						ConfigJsonBean bean=(ConfigJsonBean) jedisHelper.get("service_"+serviceName);
+						//
+						if(bean!=null){
+							//获取调用系统可调用服务集合
+							Map<String,String> serviceMaps=(Map<String, String>) jedisHelper.get("auth_"+system);
+							//判断客户端权限
+							if(serviceMaps.get(serviceName)!=null){
 								//提取数据用 sql
 								Map sqlMap=new HashMap();
 								//TODO 拼装sql
@@ -367,12 +367,12 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 									jedisHelper.set("json_"+page_key,(json+"}").toString(),30*60*1000);
 	//				  		    }
 							}else{
-								error_msg="服务不存在!serviceName="+serviceName+"!";
+								error_msg="服务访问权限受限!serviceName="+serviceName+"!";
 								json=new StringBuffer("{");
 								addData(null,json,"error_msg",error_msg);
 							}
 						}else{
-							error_msg="服务访问权限受限!serviceName="+serviceName+"!";
+							error_msg="服务不存在!serviceName="+serviceName+"!";
 							json=new StringBuffer("{");
 							addData(null,json,"error_msg",error_msg);
 						}
@@ -387,7 +387,7 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 					addData(null,json,"error_msg",error_msg);
 				}
 			} catch (Exception e) {
-				error_msg=e.getMessage();
+				error_msg="接口服务异常,请与管理员联系!"+e.getMessage();
 				json=new StringBuffer("{");
 				addData(null,json, "error_msg","接口服务异常,请与管理员联系!");
 				log.error("调用获取信息接口错误!",e);
