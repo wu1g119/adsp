@@ -557,9 +557,9 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 							}
 							//封装图片信息
 							//a.图片链接
-							imgjson.append("{\"url\":\""+StrUtils.replaceAll(o.getStr1(),"\"","\\\\\"")+"\"");
+							imgjson.append("{\"url\":\""+JsonUtils.stringToJson(o.getStr1())+"\"");
 							//b.图片文字标题
-							imgjson.append(",\"txt\":\""+StrUtils.replaceAll(o.getStr2(),"\"","\\\\\"")+"\"}");
+							imgjson.append(",\"txt\":\""+JsonUtils.stringToJson(o.getStr2())+"\"}");
 							//
 							//间隔符,
 							if(i<imglist.size()-1){
@@ -570,7 +570,7 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 						}
 					}
 					//3.封装文字信息
-					data.append("\"txt\":\""+StrUtils.replaceAll(ti,"\"","\\\\\"")+"\",");
+					data.append("\"txt\":\""+JsonUtils.stringToJson(ti)+"\",");
 					//4.封装图片信息
 					data.append("\"img\":[");
 					data.append(imgjson);
@@ -578,10 +578,10 @@ public class WebServiceManager extends BaseManager implements IWebServiceManager
 					//节点end
 					data.append("}");
 				}else{
-					data.append("\""+attrName+"\":\""+StrUtils.replaceAll(ti,"\"","\\\\\"")+"\"");
+					data.append("\""+attrName+"\":\""+JsonUtils.stringToJson(ti)+"\"");
 				}
 			}else{
-				data.append("\""+attrName+"\":\""+StrUtils.replaceAll(ti,"\"","\\\\\"")+"\"");
+				data.append("\""+attrName+"\":\""+JsonUtils.stringToJson(ti)+"\"");
 			}
 		}
 	}
